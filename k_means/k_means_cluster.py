@@ -92,26 +92,28 @@ def min(a, b):
 
 def closest_cluster(point, cluster_1, cluster_2):
     print("finding closest cluster")
-    print("point: %s" % type(point))
-    print("cluster_1: %s" % type(cluster_1))
-    print("cluster_2: %s" % type(cluster_2))
-    print("min: %s" % min(euclid_dist(point, cluster_1), euclid_dist(point, cluster_2)))
+    # print("point: %s" % type(point))
+    # print("cluster_1: %s" % type(cluster_1))
+    # print("cluster_2: %s" % type(cluster_2))
+    # print("min: %s" % min(euclid_dist(point, cluster_1), euclid_dist(point, cluster_2)))
     d_to_cluster_1 = euclid_dist(point, cluster_1)
     d_to_cluster_2 = euclid_dist(point, cluster_2)
     lesser_d = min(d_to_cluster_1, d_to_cluster_2)
     if lesser_d == d_to_cluster_1:
+        print("closer cluster is 1")
         return cluster_1
+    print("closer cluster is 2")
     return cluster_2
 
 
 def assign_to_cluster(data_point, cluster_1, cluster_2):
     closest = closest_cluster(data_point.point, cluster_1, cluster_2)
-    print("data_point.cluster: %s" % data_point.cluster)
+    # print("data_point.cluster: %s" % data_point.cluster)
     if closest is cluster_1:
         data_point.cluster = 1
     else:
         data_point.cluster = 2
-    print("data_point.cluster: %s" % data_point.cluster)
+        # print("data_point.cluster: %s" % data_point.cluster)
 
 
 def get_random_cluster():
@@ -137,7 +139,7 @@ def members_of_cluster(pred, cluster_label):
     cluster_members = []
     for p in pred:
         if p.cluster == cluster_label:
-            cluster_members.append(pred)
+            cluster_members.append(p)
     return cluster_members
 
 
@@ -166,6 +168,7 @@ def run_k_means(num_iters=100):
             print("New cluster: %s" % point.cluster)
         cluster_1, cluster_2 = shift_clusters(k_means_feature_points)
         print("New centroids: %s, %s" % (cluster_1, cluster_2))
+    return k_means_feature_points
 
 
 pred = [k.cluster for k in run_k_means()]
