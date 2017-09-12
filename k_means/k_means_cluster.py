@@ -37,15 +37,36 @@ def Draw(pred, features, poi, mark_poi=False, name="image.png", f1_name="feature
 data_dict = pickle.load(open("../final_project/final_project_dataset.pkl", "r"))
 ### there's an outlier--remove it! 
 data_dict.pop("TOTAL", 0)
+minimum = None
+maximum = None
+print("printing data_dict")
+from math import isnan
+
+for k, v in data_dict.items():
+    if isnan(float(v['salary'])):
+        continue
+    if minimum is None or maximum is None:
+        minimum = v['salary']
+        maximum = v['salary']
+    else:
+        if v['salary'] < minimum:
+            minimum = v['salary']
+        if v['salary'] > maximum:
+            maximum = v['salary']
 
 ### the input features we want to use 
 ### can be any key in the person-level dictionary (salary, director_fees, etc.) 
 feature_1 = "salary"
 feature_2 = "exercised_stock_options"
+feature_3 = "total_payments"
 poi = "poi"
 features_list = [poi, feature_1, feature_2]
 data = featureFormat(data_dict, features_list)
 poi, finance_features = targetFeatureSplit(data)
+i = 0
+
+print("biggest value for exercised_stock_options: %s" % maximum)
+print("smallest value for exercised_stock_options: %s" % minimum)
 
 ### in the "clustering with 3 features" part of the mini-project,
 ### you'll want to change this line to 
